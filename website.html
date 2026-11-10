@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asisten MI · Chatbot Prodi MI Polinela</title>
+<style>
+:root{--bg:#eef2f7;--card:#fff;--ink:#14233a;--mut:#62728a;--line:#dde4ee;--soft:#f5f8fc;--pri:#0f766e;--pri2:#0b5d57;--navy:#0c1e3a;--bad:#b3261e;--badbg:#fdecea;--ok:#17703d;--okbg:#e4f5ea;--sh:0 1px 2px rgba(12,30,58,.06),0 8px 24px rgba(12,30,58,.07);color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#0b121b;--card:#141e2b;--ink:#e8eef7;--mut:#9aaac0;--line:#26364a;--soft:#1a2636;--pri:#2cb8ae;--pri2:#23a198;--navy:#08111d;--bad:#ff9087;--badbg:#3a1f1f;--ok:#74d6a0;--okbg:#17321f;--sh:0 1px 2px #0006,0 8px 24px #0005}}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.hide{display:none!important}button{font:inherit;cursor:pointer}svg{width:18px;height:18px;flex:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-weight:600;transition:.15s}
+.btn:hover{border-color:var(--pri);color:var(--pri)}.btn.p{background:var(--pri);border-color:var(--pri);color:#fff}.btn.p:hover{background:var(--pri2);color:#fff}
+.btn.d{color:var(--bad)}.btn.d:hover{border-color:var(--bad);background:var(--badbg);color:var(--bad)}.btn:disabled{opacity:.55;pointer-events:none}.btn.sm{padding:6px 12px;font-size:13px}
+input{font:inherit;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);outline:none;transition:.15s}
+input:focus{border-color:var(--pri);box-shadow:0 0 0 3px color-mix(in srgb,var(--pri) 22%,transparent);background:var(--card)}
+/* Masuk / Daftar */
+.auth{min-height:100%;display:grid;grid-template-columns:1.05fr 1fr}
+.brand{background:linear-gradient(155deg,var(--navy),#0d4a53 60%,#0f766e);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.brand:before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-140px;top:-120px;background:radial-gradient(#ffffff1f,transparent 70%)}
+.logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}.logo i{width:42px;height:42px;border-radius:12px;background:#ffffff22;display:grid;place-items:center}.logo svg{width:24px;height:24px}
+.brand h1{font-size:34px;line-height:1.2;margin:0 0 12px}.brand p{margin:0;color:#d3e4ee;max-width:430px}
+.feat{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:14px}.feat li{display:flex;gap:12px;align-items:flex-start;color:#e7f1f6}.feat b{display:block;color:#fff}.feat span{font-size:13px;color:#bcd3df}
+.feat i{width:34px;height:34px;border-radius:10px;background:#ffffff1c;display:grid;place-items:center;flex:none}.brand small{color:#9fbccb;position:relative}
+.formwrap{display:grid;place-items:center;padding:32px}.fcard{width:100%;max-width:400px}
+.fcard h2{margin:0 0 4px;font-size:26px}.fcard>p{margin:0 0 22px;color:var(--mut)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:20px}
+.seg button{border:0;background:none;padding:9px;border-radius:9px;font-weight:600;color:var(--mut)}.seg button.on{background:var(--card);color:var(--pri);box-shadow:var(--sh)}
+label{display:block;font-size:13px;font-weight:600;margin:0 0 6px}.fld{margin-bottom:16px}.pw{position:relative}.pw button{position:absolute;right:6px;top:6px;border:0;background:none;color:var(--mut);padding:6px;border-radius:8px}
+.hint{font-size:12.5px;color:var(--mut);margin-top:6px}.hint.hide{display:block!important;visibility:hidden}.msg{margin:14px 0 0;padding:10px 12px;border-radius:10px;font-size:13.5px;background:var(--badbg);color:var(--bad)}.msg.ok{background:var(--okbg);color:var(--ok)}
+.fcard .btn.p{width:100%;justify-content:center;padding:12px}.demo{margin-top:20px;font-size:12.5px;color:var(--mut);text-align:center}
+/* Aplikasi */
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:10px 24px;background:var(--card);border-bottom:1px solid var(--line)}
+.top .logo{color:var(--ink);font-size:17px}.top .logo i{background:var(--pri);color:#fff;width:36px;height:36px}.sp{flex:1}
+.history-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;padding:0}
+.nav{display:flex;gap:6px;margin-left:18px}.nav button{border:0;background:none;min-height:40px;padding:8px 16px;border-radius:9px;font-weight:600;color:var(--mut);display:flex;gap:8px;align-items:center}.nav button.on{background:color-mix(in srgb,var(--pri) 14%,transparent);color:var(--pri)}
+.user{display:flex;align-items:center;gap:10px;padding:0;border:0;border-radius:0;background:none;box-shadow:none}.user .av{order:2;width:38px;height:38px;border:0;box-shadow:none;border-radius:50%;background:#0752a0;color:#fff}.user .av:after{content:"";position:absolute;width:9px;height:9px;margin:27px 0 0 27px;border:2px solid var(--card);border-radius:50%;background:#22c55e}.user .t{order:1;min-width:0;padding:0}.user .pill{display:none}.user .t b{font-size:14px;font-weight:500;color:#5368e8;white-space:nowrap}.user .logout{order:3;margin-left:10px}.btn.logout{background:#b3261e;border-color:#b3261e;color:#fff}.btn.logout:hover{background:#8f1d17;border-color:#8f1d17;color:#fff}.av{position:relative;width:38px;height:38px;border:2px solid var(--card);box-shadow:0 0 0 2px color-mix(in srgb,var(--pri) 28%,transparent);border-radius:50%;background:linear-gradient(135deg,var(--pri),#2b6cb0);color:#fff;display:grid;place-items:center;font-weight:700;flex:none;text-transform:uppercase}
+.user b{display:block;line-height:1.1;font-size:14px;font-weight:700}.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--soft);border:1px solid var(--line);color:var(--mut)}
+.pill.ok{background:var(--okbg);color:var(--ok);border-color:transparent}.pill.off{background:var(--badbg);color:var(--bad);border-color:transparent}
+.workspace{max-width:1360px;margin:0 auto;padding:24px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:22px;align-items:start}
+.workspace.admin-mode{grid-template-columns:minmax(0,1fr);max-width:1000px}.workspace.admin-mode .history{display:none}
+.history{height:calc(100vh - 184px);min-height:380px;position:sticky;top:88px;display:flex;flex-direction:column;padding:16px;background:linear-gradient(160deg,var(--card),var(--soft));border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh)}
+.history-head{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 14px}.history-head h2{margin:0;font-size:16px}.history-count{min-width:25px;padding:2px 7px;border-radius:99px;background:color-mix(in srgb,var(--pri) 12%,var(--card));color:var(--pri);font-size:12px;font-weight:700;text-align:center}
+.new-chat{width:100%;justify-content:center;margin-bottom:12px;border-color:color-mix(in srgb,var(--pri) 35%,var(--line));background:color-mix(in srgb,var(--pri) 8%,var(--card));color:var(--pri)}
+.new-chat:hover{background:color-mix(in srgb,var(--pri) 14%,var(--card))}
+.history-search{margin-bottom:12px}.history-search input{padding:9px 11px;font-size:13px;background:var(--card)}
+.history-list{min-height:0;overflow:auto;flex:1;margin:0 -5px;padding:0 5px}
+.history-group{margin:14px 0 6px;padding:0 8px;color:var(--mut);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.history-entry{position:relative;display:flex;align-items:center;margin:2px 0;border:1px solid transparent;border-radius:11px;transition:.15s}
+.history-entry:hover,.history-entry:focus-within{background:var(--card);border-color:var(--line)}
+.history-item{flex:1;min-width:0;width:100%;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--ink);text-align:left;font-size:13px;transition:.15s}
+.history-item svg{width:17px;height:17px;color:var(--mut)}.history-item span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-item:hover{border-color:transparent}.history-item.active{background:color-mix(in srgb,var(--pri) 11%,var(--card));border-color:color-mix(in srgb,var(--pri) 22%,var(--line));color:var(--pri);font-weight:600}.history-item.active svg{color:var(--pri)}
+.history-actions{position:absolute;right:4px;top:50%;display:flex;align-items:center;gap:1px;padding:2px;border-radius:8px;background:var(--card);box-shadow:0 1px 5px rgba(12,30,58,.12);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-50%);transition:opacity .15s,visibility .15s}.history-entry:hover .history-actions,.history-entry:focus-within .history-actions{opacity:1;visibility:visible;pointer-events:auto}
+.history-action{width:27px;height:29px;display:grid;place-items:center;padding:0;border:0;border-radius:7px;background:transparent;color:var(--mut)}.history-action:hover{background:var(--soft);color:var(--pri)}.history-action svg{width:15px;height:15px}.history-action.pin-on{color:var(--pri)}.history-action.delete:hover{background:var(--badbg);color:var(--bad)}
+.history-rename{min-width:0;flex:1;display:flex;align-items:center;gap:4px;padding:4px}
+.history-rename input{min-width:0;padding:7px 8px;font-size:12px;background:var(--card)}
+.history-rename button{width:28px;height:29px;padding:0;justify-content:center}
+.history-empty{margin:18px 8px;color:var(--mut);font-size:13px;line-height:1.55}
+.history-foot{margin-top:12px;padding:12px 8px 0;border-top:1px solid var(--line);color:var(--mut);font-size:11.5px}
+.history-scrim{display:none}
+main{min-width:0;margin:0;padding:0}.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh)}
+.ph{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}.ph h3{margin:0;font-size:17px}.ph small{color:var(--mut);display:block}
+.dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #22c55e30}
+#log{height:min(56vh,520px);overflow:auto;overflow-x:hidden;padding:20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.row{display:flex;gap:10px;max-width:88%;min-width:0}.row>div:last-child{min-width:0;max-width:calc(100% - 40px)}.row.u{align-self:flex-end;flex-direction:row-reverse}.row .av{width:30px;height:30px;font-size:13px}.row.a .av{background:var(--navy);color:#fff}
+.bub{min-width:0;max-width:100%;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--soft);overflow-wrap:anywhere}.row.u .bub{background:var(--pri);border-color:var(--pri);color:#fff;border-bottom-right-radius:4px}.row.a .bub{border-bottom-left-radius:4px}
+.bub p{margin:0}.bub p+p,.bub ul+p,.bub p+ul,.bub pre+p,.bub p+pre{margin-top:8px}.bub ul{margin:0;padding-left:20px}.bub code{background:#0001;padding:1px 6px;border-radius:6px;font:13px Consolas,monospace}
+.bub pre{max-width:100%;margin:0;padding:10px 12px;background:var(--navy);color:#e6eef7;border-radius:10px;overflow:hidden;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:13px Consolas,monospace}.bub pre code{background:none;padding:0;white-space:inherit;overflow-wrap:inherit;word-break:inherit}
+.time{font-size:11px;color:var(--mut);margin-top:3px}.row.u .time{text-align:right}.err .bub{background:var(--badbg);border-color:transparent;color:var(--bad)}
+.typing i{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--mut);animation:b 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}@keyframes b{50%{transform:translateY(-5px);opacity:.4}}
+.empty{margin:auto;text-align:center;max-width:420px;color:var(--mut)}.empty .big{width:56px;height:56px;border-radius:16px;margin:0 auto 12px;background:var(--pri);color:#fff;display:grid;place-items:center}.empty .big svg{width:28px;height:28px}.empty h4{margin:0 0 4px;color:var(--ink);font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}.chips button{border:1px solid var(--line);background:var(--card);padding:7px 13px;border-radius:99px;color:var(--ink);font-size:13px}.chips button:hover{border-color:var(--pri);color:var(--pri)}
+.send{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--line)}.send input{flex:1}
+/* Dashboard */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{padding:16px 18px}.stat small{color:var(--mut);font-weight:600}.stat b{display:block;font-size:28px;line-height:1.2;margin-top:2px}
+.tools{display:flex;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line)}.tools input{max-width:300px}.tw{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);text-align:left;padding:11px 20px;background:var(--soft)}td{padding:12px 20px;border-top:1px solid var(--line);white-space:nowrap}
+td .u2{display:flex;align-items:center;gap:10px;font-weight:600}td .av{width:30px;height:30px;font-size:13px}.r{text-align:right}.none{padding:28px;text-align:center;color:var(--mut)}
+/* Notifikasi dan konfirmasi */
+#toasts{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:30}.toast{padding:11px 16px;border-radius:12px;background:var(--navy);color:#fff;box-shadow:var(--sh);animation:i .2s;max-width:320px;font-size:14px}.toast.bad{background:var(--bad);color:#fff}@keyframes i{from{transform:translateY(8px);opacity:0}}
+#modal{position:fixed;inset:0;background:#0a142399;display:grid;place-items:center;z-index:40;padding:20px}.mbox{background:var(--card);border-radius:16px;padding:24px;max-width:380px;width:100%;box-shadow:var(--sh)}.mbox h4{margin:0 0 6px;font-size:18px}.mbox p{margin:0 0 18px;color:var(--mut)}.mbox>input{margin:-6px 0 18px;background:var(--soft)}.mbox>div{display:flex;gap:10px;justify-content:flex-end}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:0 0 24px}
+@media(max-width:860px){.auth{grid-template-columns:1fr}.brand{padding:28px 24px;gap:20px}.brand h1{font-size:26px}.feat{display:none}.stats{grid-template-columns:1fr 1fr}.top{padding:10px 14px;flex-wrap:wrap}.history-toggle{display:inline-flex}.top .logo{font-size:16px}.nav{margin-left:0;order:3;width:100%}.user{margin-left:auto;gap:8px}.user .t{display:block}.user .t b{max-width:120px;overflow:hidden;text-overflow:ellipsis}.user .av{width:34px;height:34px}.user .av:after{width:8px;height:8px;margin:24px 0 0 24px}.user .logout{margin-left:2px}.workspace{position:relative;display:block;padding:14px;min-height:calc(100vh - 120px)}.workspace main{width:100%}.history{position:fixed;z-index:12;left:0;top:0;bottom:0;width:min(310px,86vw);height:100dvh;min-height:0;border-radius:0 18px 18px 0;transform:translateX(-105%);transition:transform .22s ease}.workspace.history-open .history{transform:translateX(0)}.history-scrim{position:fixed;inset:0;z-index:11;border:0;background:#08111d80}.workspace.history-open .history-scrim{display:block}.history-actions{opacity:1;visibility:visible;pointer-events:auto}.history-action{width:25px}.row{max-width:96%}}
+</style></head><body>
+<div id="auth" class="auth">
+ <aside class="brand"><div class="logo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg></i>Asisten MI</div>
+ <div><h1>Asisten belajar Pemrograman API untuk mahasiswa Prodi MI.</h1><p>Chatbot berbasis model Prodi MI dengan akun pribadi, riwayat percakapan, dan pengelolaan pengguna oleh admin.</p>
+ <ul class="feat"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></i><div><b>Autentikasi token</b><span>Sandi di-hash, sesi bertanda tangan HMAC.</span></div></li>
+ <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></i><div><b>API key aman</b><span>Kunci hanya tersimpan di server, bukan di browser.</span></div></li>
+ <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 11l2 2 3-4"/></svg></i><div><b>Kontrol akses</b><span>Admin dapat menonaktifkan pengguna seketika.</span></div></li></ul></div>
+ <small>Politeknik Negeri Lampung · D3 Manajemen Informatika · PMI 1326</small></aside>
+ <section class="formwrap"><div class="fcard"><h2 id="ft">Selamat datang</h2><p id="fs">Masuk untuk melanjutkan percakapan Anda.</p>
+ <div class="seg"><button id="tM" class="on">Masuk</button><button id="tD">Daftar</button></div>
+ <div class="fld"><label for="nama">Nama pengguna</label><input id="nama" autocomplete="username" maxlength="30" placeholder="contoh: iman_alfaqih"><div id="hn" class="hint hide">Huruf kecil, angka, atau garis bawah (3–30 karakter).</div></div>
+ <div class="fld"><label for="sandi">Kata sandi</label><div class="pw"><input id="sandi" type="password" autocomplete="current-password" maxlength="100" placeholder="Kata sandi"><button id="eye" type="button" title="Tampilkan atau sembunyikan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div id="hs" class="hint hide">Minimal 8 karakter.</div></div>
+ <button id="go" class="btn p">Masuk</button><div id="amsg" class="msg hide"></div><div class="demo">Dikembangkan untuk praktikum Pemrograman API</div></div></section>
+</div>
+<div id="app" class="hide">
+ <header class="top"><button id="historyToggle" class="btn history-toggle" type="button" aria-label="Buka riwayat percakapan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="logo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg></i>Asisten MI</div>
+ <nav class="nav"><button id="bChat" class="on">Percakapan</button><button id="bAdm" class="hide">Dashboard</button></nav><span class="sp"></span>
+ <div class="user"><div class="t"><b id="un"></b><span id="ur" class="hide"></span></div><div class="av" id="av"></div><button id="bOut" class="btn sm logout">Keluar</button></div></header>
+ <div id="workspace" class="workspace chat-mode">
+  <aside class="history">
+   <div class="history-head"><h2>Riwayat chat</h2><span id="historyCount" class="history-count">0</span></div>
+   <button id="newChat" class="btn new-chat" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Obrolan baru</button>
+   <label class="history-search"><input id="historySearch" type="search" placeholder="Cari percakapan…"></label>
+   <div id="historyList" class="history-list"></div>
+   <div class="history-foot">Percakapan Anda tersimpan pribadi di akun ini.</div>
+  </aside>
+  <button id="historyScrim" class="history-scrim" type="button" aria-label="Tutup riwayat"></button>
+  <main>
+  <section id="chat" class="panel"><div class="ph"><span class="dot"></span><div><h3 id="chatTitle">Percakapan baru</h3><small id="chatSubtitle">Asisten belajar Pemrograman API · riwayat tersimpan per akun</small></div></div>
+   <div id="log"></div><div class="send"><input id="q" placeholder="Tulis pertanyaan Anda…" maxlength="1000" autocomplete="off"><button id="stop" class="btn d hide" type="button">Hentikan</button><button id="kirim" class="btn p">Kirim</button></div></section>
+  <section id="adm" class="hide"><div class="stats" id="stats"></div>
+   <div class="panel"><div class="ph"><div><h3>Kelola pengguna</h3><small>Pengguna nonaktif langsung ditolak (403) pada permintaan berikutnya, walau token belum kedaluwarsa.</small></div></div>
+   <div class="tools"><input id="cari" placeholder="Cari nama pengguna…"><button id="seg" class="btn sm">Muat ulang</button></div>
+   <div class="tw"><table><thead><tr><th>Pengguna</th><th>Peran</th><th>Status</th><th>Terakhir masuk</th><th>Pertanyaan</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div></section>
+ </main></div><footer>© 2026 Asisten MI · Prodi D-III Manajemen Informatika, Politeknik Negeri Lampung</footer>
+</div>
+<div id="toasts"></div><div id="modal" class="hide"><div class="mbox"><h4 id="mt"></h4><p id="mp"></p><input id="modalInput" class="hide" maxlength="80" autocomplete="off"><div><button id="mn" class="btn">Batal</button><button id="my" class="btn p">Ya, lanjutkan</button></div></div></div>
+<script>
+const $=id=>document.getElementById(id);let token=null,me=null,mode='masuk',users=[],sibuk=false,chatAktif=null,percakapanAktif=null,daftarPercakapan=[],pemuatanChat=0;
+const SARAN=['Apa beda 401 dan 403?','Jelaskan GET dan POST secara singkat.','Apa itu token Bearer?','Mengapa API key harus di server?'];
+async function api(path,body,signal,method){const r=await fetch(path,{method:method||(body!==undefined?'POST':'GET'),headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:body!==undefined?JSON.stringify(body):undefined,signal});return{status:r.status,d:await r.json().catch(()=>({}))}}
+function toast(t,bad){const d=document.createElement('div');d.className='toast'+(bad?' bad':'');d.textContent=t;$('toasts').append(d);setTimeout(()=>d.remove(),3800)}
+function tutupModal(){ $('modal').classList.add('hide');$('modalInput').classList.add('hide');$('modalInput').value='';$('my').textContent='Ya, lanjutkan';$('my').className='btn p'}
+function konfirmasi(j,p,label='Ya, lanjutkan',danger=false){return new Promise(res=>{$('mt').textContent=j;$('mp').textContent=p;$('modalInput').classList.add('hide');$('my').textContent=label;$('my').className='btn'+(danger?' d':' p');$('modal').classList.remove('hide');const x=v=>{tutupModal();res(v)};$('my').onclick=()=>x(true);$('mn').onclick=()=>x(false)})}
+function inputModal(j,p,nilai){return new Promise(res=>{$('mt').textContent=j;$('mp').textContent=p;$('modalInput').value=nilai;$('modalInput').classList.remove('hide');$('my').textContent='Simpan';$('my').className='btn p';$('modal').classList.remove('hide');const x=v=>{tutupModal();res(v)};$('my').onclick=()=>x($('modalInput').value.trim()||null);$('mn').onclick=()=>x(null);$('modalInput').onkeydown=e=>{if(e.key==='Enter')$('my').click();if(e.key==='Escape')$('mn').click()};$('modalInput').focus();$('modalInput').select()})}
+function tampil(v){$('auth').classList.toggle('hide',v!=='auth');$('app').classList.toggle('hide',v==='auth');$('chat').classList.toggle('hide',v!=='chat');$('adm').classList.toggle('hide',v!=='adm');$('bChat').classList.toggle('on',v==='chat');$('bAdm').classList.toggle('on',v==='adm');$('workspace').classList.toggle('admin-mode',v==='adm');$('workspace').classList.toggle('history-open',false)}
+function pesanForm(t,ok){const m=$('amsg');m.textContent=t||'';m.className='msg'+(ok?' ok':'')+(t?'':' hide')}
+function hapusSesi(){try{sessionStorage.removeItem('asisten-mi-token')}catch{toast('Sesi browser tidak dapat dibersihkan. Tutup tab ini untuk mengakhiri sesi.',true)}}
+function keluar(t,ok){hentikan(false);hapusSesi();token=null;me=null;users=[];percakapanAktif=null;daftarPercakapan=[];$('sandi').value='';renderRiwayat();tampil('auth');pesanForm(t,ok)}
+function galat(r){const e=r.d.error;if(r.status===401||e?.code==='AKUN_NONAKTIF'){keluar((e?.message||'Sesi berakhir.')+' ('+r.status+')');return true}return false}
+function jam(waktu){const d=waktu?new Date(`${waktu.replace(' ','T')}Z`):new Date();return d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}
+// Tampilan teks dari model: paragraf, daftar, tebal, kode. Memakai DOM (bukan innerHTML) supaya aman.
+function inline(p,t){for(const s of t.split(/(\*\*[^*]+\*\*|`[^`]+`)/)){if(!s)continue;let e;if(s.startsWith('**')&&s.length>4){e=document.createElement('b');e.textContent=s.slice(2,-2)}else if(s.startsWith('`')&&s.length>2){e=document.createElement('code');e.textContent=s.slice(1,-1)}else e=document.createTextNode(s);p.append(e)}}
+function md(el,teks){let ul=null,blok=null;for(const ln of String(teks).replace(/\r/g,'').split('\n')){
+ if(ln.trim().startsWith('```')){if(blok){el.append(blok.pre);blok=null}else{const pre=document.createElement('pre'),c=document.createElement('code');pre.append(c);blok={pre,c};}continue}
+ if(blok){blok.c.textContent+=(blok.c.textContent?'\n':'')+ln;continue}
+ const m=/^\s*(?:[-*]|\d+[.)])\s+(.*)$/.exec(ln);
+ if(m){if(!ul){ul=document.createElement('ul');el.append(ul)}const li=document.createElement('li');inline(li,m[1]);ul.append(li);continue}
+ ul=null;if(!ln.trim())continue;const p=document.createElement('p');inline(p,ln.replace(/^#+\s*/,''));el.append(p)}
+ if(blok)el.append(blok.pre)}
+function gelembung(cls,teks,waktu){$('log').querySelector('.empty')?.remove();const r=document.createElement('div');r.className='row '+cls;const a=document.createElement('div');a.className='av';a.textContent=cls==='u'?me.nama[0]:'AI';
+ const w=document.createElement('div'),b=document.createElement('div');b.className='bub';if(cls==='u')b.textContent=teks;else md(b,teks);const t=document.createElement('div');t.className='time';t.textContent=jam(waktu);w.append(b,t);r.append(a,w);$('log').append(r);$('log').scrollTop=1e9;return r}
+function kosong(){const d=document.createElement('div');d.className='empty';d.innerHTML='<div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg></div><h4></h4><div>Silakan ajukan pertanyaan, atau pilih salah satu contoh berikut.</div><div class="chips"></div>';
+ d.querySelector('h4').textContent='Halo, '+me.nama+'!';for(const s of SARAN){const b=document.createElement('button');b.textContent=s;b.onclick=()=>{$('q').value=s;kirim()};d.querySelector('.chips').append(b)}$('log').append(d)}
+$('tM').onclick=()=>gantiMode('masuk');$('tD').onclick=()=>gantiMode('daftar');
+function gantiMode(m){mode=m;$('tM').classList.toggle('on',m==='masuk');$('tD').classList.toggle('on',m==='daftar');$('go').textContent=m==='masuk'?'Masuk':'Buat akun';$('hn').classList.toggle('hide',m==='masuk');$('hs').classList.toggle('hide',m==='masuk');
+ $('ft').textContent=m==='masuk'?'Selamat datang':'Buat akun baru';$('fs').textContent=m==='masuk'?'Masuk untuk melanjutkan percakapan Anda.':'Daftar untuk mulai memakai Asisten MI.';pesanForm('')}
+$('eye').onclick=()=>{$('sandi').type=$('sandi').type==='password'?'text':'password'};
+async function masuk(){if(sibuk)return;sibuk=true;$('go').disabled=true;const r=await api('/api/'+mode,{nama:$('nama').value,sandi:$('sandi').value});sibuk=false;$('go').disabled=false;$('sandi').value='';
+ if(r.status>=400){pesanForm(`${r.d.error?.message||'Gagal.'} (${r.status} ${r.d.error?.code||''})`);return}
+ if(mode==='daftar'){gantiMode('masuk');pesanForm(r.d.pesan+' Silakan masuk dengan akun tersebut.',true);return}
+ token=r.d.token;me=r.d;try{sessionStorage.setItem('asisten-mi-token',token)}catch{toast('Login berhasil, tetapi sesi tidak dapat disimpan untuk reload.',true)}aturProfil();pesanForm('');await bukaChat(null,true)}
+function aturProfil(){$('av').textContent=me.nama[0];$('un').textContent=me.nama;$('ur').textContent=me.peran;$('bAdm').classList.toggle('hide',me.peran!=='admin')}
+async function pulihkanSesi(){let tersimpan;try{tersimpan=sessionStorage.getItem('asisten-mi-token')}catch{tampil('auth');pesanForm('Sesi browser tidak dapat dibaca. Silakan masuk kembali.');return}
+ if(!tersimpan){tampil('auth');return}token=tersimpan;
+ try{const r=await api('/api/saya');if(r.status===401||r.status===403){keluar((r.d.error?.message||'Sesi sudah berakhir. Silakan masuk kembali.')+` (${r.status})`);return}
+  if(r.status>=400){tampil('auth');pesanForm(r.d.error?.message||`Sesi gagal diverifikasi (${r.status}).`);return}
+  me=r.d;aturProfil();pesanForm('');await bukaChat()}
+ catch{tampil('auth');pesanForm('Sesi belum dapat diverifikasi karena server tidak terjangkau. Coba muat ulang halaman.')}}
+$('go').onclick=masuk;$('sandi').onkeydown=e=>{if(e.key==='Enter')masuk()};$('nama').onkeydown=e=>{if(e.key==='Enter')$('sandi').focus()};
+function tombolAksi(label,ikon,kelas,aksi){const b=document.createElement('button');b.type='button';b.className='history-action'+(kelas?' '+kelas:'');b.title=label;b.setAttribute('aria-label',label);b.innerHTML=ikon;b.onclick=aksi;return b}
+function itemRiwayat(c){const entry=document.createElement('div');entry.className='history-entry'+(c.dipin?' pinned':'');
+ const open=document.createElement('button');open.type='button';open.className='history-item'+(Number(c.id)===Number(percakapanAktif)?' active':'');open.title=c.judul;
+ open.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg><span></span>';
+ open.querySelector('span').textContent=c.judul;open.onclick=()=>bukaChat(c.id);
+ const actions=document.createElement('div');actions.className='history-actions';
+ const pinIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 5 5-4 1-4 4 1 4-2 2-3-5-5-3 2-2 4 1 4-4zM4 20l5-5"/></svg>';
+ const editIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>';
+ const deleteIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>';
+ actions.append(tombolAksi(c.dipin?'Lepas pin':'Sematkan',pinIcon,c.dipin?'pin-on':'',()=>ubahPin(c)),tombolAksi('Ubah nama',editIcon,'',()=>ubahNama(c)),tombolAksi('Hapus chat',deleteIcon,'delete',()=>hapusChat(c)));
+ entry.append(open,actions);return entry}
+function renderRiwayat(){const list=$('historyList'),q=$('historySearch').value.trim().toLowerCase();list.textContent='';$('historyCount').textContent=daftarPercakapan.length;
+ const cocok=daftarPercakapan.filter(c=>!q||c.judul.toLowerCase().includes(q)),pinned=cocok.filter(c=>c.dipin),groups=[['Hari ini',[]],['7 hari terakhir',[]],['Sebelumnya',[]]],today=new Date();today.setHours(0,0,0,0);
+ for(const c of cocok){if(c.dipin)continue;const d=new Date(`${c.diperbarui.replace(' ','T')}Z`),day=new Date(d);day.setHours(0,0,0,0);const age=Math.floor((today-day)/86400000);groups[age<=0?0:age<7?1:2][1].push(c)}
+ let shown=0;const section=(title,items)=>{if(!items.length)return;const h=document.createElement('div');h.className='history-group';h.textContent=title;list.append(h);for(const c of items){list.append(itemRiwayat(c));shown++}};
+ section('Disematkan',pinned);for(const [title,items] of groups)section(title,items);
+ if(!shown){const d=document.createElement('div');d.className='history-empty';d.textContent=q?'Tidak ada percakapan yang cocok.':'Belum ada riwayat. Mulai obrolan baru untuk melihatnya di sini.';list.append(d)}}
+async function ubahPin(c){try{const r=await api(`/api/percakapan/${c.id}/pin`,{dipin:!c.dipin});if(galat(r))return;if(r.status>=400){toast(r.d.error?.message||'Status pin gagal diubah.',true);return}await muatDaftar();toast(r.d.dipin?'Chat disematkan.':'Pin chat dilepas.')}
+ catch{toast('Status pin gagal diubah. Periksa koneksi server.',true)}}
+async function ubahNama(c){const judul=await inputModal('Ubah nama chat','Gunakan nama yang mudah dikenali.',c.judul);if(!judul||judul===c.judul)return;
+ try{const r=await api(`/api/percakapan/${c.id}/rename`,{judul});if(galat(r))return;if(r.status>=400){toast(r.d.error?.message||'Nama chat gagal diubah.',true);return}if(Number(c.id)===Number(percakapanAktif))$('chatTitle').textContent=r.d.judul;await muatDaftar();toast('Nama chat berhasil diubah.')}
+ catch{toast('Nama chat gagal diubah. Periksa koneksi server.',true)}}
+async function hapusChat(c){if(!await konfirmasi('Hapus chat ini?','“'+c.judul+'” dan semua pesannya akan dihapus permanen.','Hapus chat',true))return;
+ try{if(Number(c.id)===Number(percakapanAktif))hentikan();const r=await api(`/api/percakapan/${c.id}`,undefined,undefined,'DELETE');if(galat(r))return;if(r.status>=400){toast(r.d.error?.message||'Chat gagal dihapus.',true);return}
+  if(Number(c.id)===Number(percakapanAktif))chatBaru();await muatDaftar();toast('Chat berhasil dihapus.')}
+ catch{toast('Chat gagal dihapus. Periksa koneksi server.',true)}}
+async function muatDaftar(){if(!token)return;try{const r=await api('/api/percakapan');if(galat(r))return;if(r.status>=400){toast(r.d.error?.message||'Riwayat percakapan gagal dimuat.',true);return}daftarPercakapan=r.d.percakapan||[];renderRiwayat();const aktif=daftarPercakapan.find(c=>Number(c.id)===Number(percakapanAktif));if(aktif)$('chatTitle').textContent=aktif.judul}
+ catch{toast('Riwayat percakapan gagal dimuat. Periksa koneksi server.',true)}}
+async function bukaChat(id,baru=false){hentikan(false);tampil('chat');const seq=++pemuatanChat;$('log').textContent='';$('q').disabled=true;$('kirim').disabled=true;
+ if(!daftarPercakapan.length){$('historyCount').textContent='…';$('historyList').textContent='';const memuat=document.createElement('div');memuat.className='history-empty';memuat.textContent='Memuat riwayat percakapan…';$('historyList').append(memuat)}
+ let r;try{r=await api('/api/percakapan')}catch{$('q').disabled=false;$('kirim').disabled=false;if(seq===pemuatanChat){const gagal=document.createElement('div');gagal.className='history-empty';gagal.textContent='Riwayat gagal dimuat. Muat ulang halaman untuk mencoba lagi.';$('historyList').replaceChildren(gagal);toast('Riwayat percakapan gagal dimuat. Periksa koneksi server.',true)}return}
+ if(seq!==pemuatanChat)return;if(galat(r)){ $('q').disabled=false;$('kirim').disabled=false;return}
+ if(r.status>=400){$('q').disabled=false;$('kirim').disabled=false;const gagal=document.createElement('div');gagal.className='history-empty';gagal.textContent='Riwayat gagal dimuat. Muat ulang halaman untuk mencoba lagi.';$('historyList').replaceChildren(gagal);toast(r.d.error?.message||'Riwayat percakapan gagal dimuat.',true);return}daftarPercakapan=r.d.percakapan||[];
+ const target=baru?null:(id??(daftarPercakapan.some(c=>Number(c.id)===Number(percakapanAktif))?percakapanAktif:daftarPercakapan[0]?.id));
+ if(!target){percakapanAktif=null;$('chatTitle').textContent='Percakapan baru';$('chatSubtitle').textContent='Asisten belajar Pemrograman API · riwayat tersimpan per akun';kosong();renderRiwayat();$('q').disabled=false;$('kirim').disabled=false;return}
+ let detail;try{detail=await api(`/api/percakapan/${target}`)}catch{$('q').disabled=false;$('kirim').disabled=false;toast('Percakapan gagal dibuka. Periksa koneksi server.',true);return}if(seq!==pemuatanChat)return;if(galat(detail)){ $('q').disabled=false;$('kirim').disabled=false;return}
+ if(detail.status>=400){$('q').disabled=false;$('kirim').disabled=false;toast(detail.d.error?.message||'Percakapan gagal dibuka.',true);return}
+ percakapanAktif=detail.d.percakapan.id;$('chatTitle').textContent=detail.d.percakapan.judul;$('chatSubtitle').textContent='Asisten belajar Pemrograman API · percakapan tersimpan';$('log').textContent='';
+ if(!detail.d.pesan.length)kosong();for(const p of detail.d.pesan)gelembung(p.peran==='user'?'u':'a',p.isi,p.waktu);renderRiwayat();$('workspace').classList.remove('history-open');$('q').disabled=false;$('kirim').disabled=false}
+function chatBaru(){hentikan(false);pemuatanChat++;percakapanAktif=null;tampil('chat');$('log').textContent='';$('chatTitle').textContent='Percakapan baru';$('chatSubtitle').textContent='Mulai topik baru bersama Asisten MI';kosong();renderRiwayat();$('workspace').classList.remove('history-open');$('q').focus()}
+function statusKirim(menunggu){$('kirim').textContent=menunggu?'Kirim baru':'Kirim';$('q').placeholder=menunggu?'Tulis pesan baru untuk menginterupsi…':'Tulis pertanyaan Anda…';$('stop').classList.toggle('hide',!menunggu)}
+function hentikan(tampilkanPesan=true){const job=chatAktif;if(!job)return;chatAktif=null;if(tampilkanPesan){const b=job.bubble;b.textContent='';md(b,'Respons dihentikan.');void muatDaftar()}job.controller.abort();statusKirim(false)}
+async function kirim(){const q=$('q').value.trim();if(!q)return;if(chatAktif)hentikan();$('q').value='';gelembung('u',q);statusKirim(true);
+ const job={controller:new AbortController(),bubble:null};const row=gelembung('a','');job.bubble=row.querySelector('.bub');job.bubble.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';chatAktif=job;
+ try{if(!percakapanAktif){const buat=await api('/api/percakapan',{},job.controller.signal);if(chatAktif!==job)return;if(buat.status>=400){if(galat(buat))return;throw new Error(buat.d.error?.message||'Percakapan baru gagal dibuat.')}percakapanAktif=buat.d.id}
+  const r=await api('/api/chat',{question:q,percakapanId:Number(percakapanAktif)},job.controller.signal);if(chatAktif!==job)return;row.remove();if(galat(r))return;
+  if(r.status===200){gelembung('a',r.d.answer);void muatDaftar()}else{const e=gelembung('a',`${r.d.error?.message||'Gagal.'} (${r.status} ${r.d.error?.code||''})`);e.classList.add('err')}}
+ catch(e){if(chatAktif!==job)return;row.remove();if(e.name!=='AbortError'){const x=gelembung('a',e.message||'Gagal menghubungi server. Coba lagi.');x.classList.add('err')}}
+ finally{if(chatAktif===job){chatAktif=null;statusKirim(false);if(!$('chat').classList.contains('hide'))$('q').focus()}}}
+$('kirim').onclick=kirim;$('stop').onclick=hentikan;$('q').onkeydown=e=>{if(e.key==='Enter')kirim()};$('bChat').onclick=()=>bukaChat();$('newChat').onclick=chatBaru;$('historySearch').oninput=renderRiwayat;
+$('historyToggle').onclick=()=>$('workspace').classList.toggle('history-open');$('historyScrim').onclick=()=>$('workspace').classList.remove('history-open');$('bOut').onclick=()=>keluar('Anda telah keluar.',true);
+async function bukaAdmin(){tampil('adm');const r=await api('/api/admin/pengguna');if(galat(r))return;users=r.d.pengguna||[];gambarAdmin()}
+function gambarAdmin(){const aktif=users.filter(u=>u.aktif).length,tot=users.reduce((a,u)=>a+u.jumlah_pertanyaan,0);$('stats').textContent='';
+ for(const [k,v] of [['Total pengguna',users.length],['Aktif',aktif],['Nonaktif',users.length-aktif],['Total pertanyaan',tot]]){const d=document.createElement('div');d.className='panel stat';const s=document.createElement('small'),b=document.createElement('b');s.textContent=k;b.textContent=v;d.append(s,b);$('stats').append(d)}
+ const f=$('cari').value.trim().toLowerCase(),tb=$('rows');tb.textContent='';const list=users.filter(u=>u.nama.includes(f));
+ if(!list.length){const tr=tb.insertRow(),c=tr.insertCell();c.colSpan=6;c.className='none';c.textContent='Tidak ada pengguna yang cocok.'}
+ for(const u of list){const tr=tb.insertRow();const c1=tr.insertCell(),d=document.createElement('div');d.className='u2';const a=document.createElement('div');a.className='av';a.textContent=u.nama[0];const n=document.createElement('span');n.textContent=u.nama;d.append(a,n);c1.append(d);
+  const p=document.createElement('span');p.className='pill';p.textContent=u.peran;tr.insertCell().append(p);const s=document.createElement('span');s.className='pill '+(u.aktif?'ok':'off');s.textContent=u.aktif?'Aktif':'Nonaktif';tr.insertCell().append(s);
+  tr.insertCell().textContent=u.terakhir_masuk||'Belum pernah';tr.insertCell().textContent=u.jumlah_pertanyaan;const c=tr.insertCell();c.className='r';
+  if(u.id!==me.id&&u.peran!=='admin'){const b=document.createElement('button');b.className='btn sm'+(u.aktif?' d':'');b.textContent=u.aktif?'Nonaktifkan':'Aktifkan';
+   b.onclick=async()=>{if(!await konfirmasi(u.aktif?'Nonaktifkan pengguna?':'Aktifkan pengguna?',u.aktif?`${u.nama} akan langsung ditolak pada permintaan berikutnya.`:`${u.nama} dapat masuk dan memakai chatbot kembali.`))return;
+    const x=await api(`/api/admin/pengguna/${u.id}/aktif`,{aktif:!u.aktif});if(galat(x))return;if(x.status===200){toast(`${u.nama} ${u.aktif?'dinonaktifkan':'diaktifkan'}.`);bukaAdmin()}else toast(x.d.error?.message||'Gagal.',true)};c.append(b)}}}
+$('cari').oninput=gambarAdmin;$('seg').onclick=bukaAdmin;$('bAdm').onclick=bukaAdmin;gantiMode('masuk');tampil('auth');pulihkanSesi();
+</script></body></html>
